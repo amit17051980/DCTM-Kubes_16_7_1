@@ -1,0 +1,16 @@
+#Docbroker Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    app: {{ .Values.serviceName }}
+spec:
+  ports:
+  - port: {{ .Values.ports.docbrokerPort }}
+    name: docbrokerport
+  - port: {{ .Values.ports.docbrokrSSLport }}
+    name: docbrokrsslport
+  clusterIP: None
+  selector:
+    app: {{ .Values.serviceName }}
