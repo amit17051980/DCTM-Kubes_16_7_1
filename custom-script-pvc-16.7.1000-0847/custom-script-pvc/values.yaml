@@ -1,0 +1,15 @@
+userName: <productname>customscript
+images:
+  repository : 10.194.42.173:5000
+  customscriptimage :
+    name : cstestcustomscriptpvc
+    tag : 2
+custom:
+  createPVC: false
+  scriptPVCname: 
+  PVCSubPath: 
+persistentVolume:
+  pvcAccessModes: ReadWriteMany
+  size: 1Gi
+  storageClass: 
+  

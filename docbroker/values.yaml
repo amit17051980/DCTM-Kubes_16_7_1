@@ -54,10 +54,10 @@ persistentVolume:
   vctName: dbr-vct
   accessModes: ReadWriteOnce
   size: 1Gi
-  storageClass: bp-paas-nfs
+  storageClass: standard
   logVctAccessModes: ReadWriteOnce
   logVctSize: 2Gi
-  logVctStorageClass: bp-paas-nfs
+  logVctStorageClass: standard
    
  ### resources ###
 resources:
