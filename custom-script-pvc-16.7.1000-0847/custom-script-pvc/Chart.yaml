@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: 16.7.1000.0847
-description: Sample custom script pvc chart for content server
-name: custom-script-pvc
-version: 16.7.1000-0847
