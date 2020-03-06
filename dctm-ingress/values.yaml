@@ -1,0 +1,74 @@
+#prefix for the ingress name
+ingressPrefix: <prefix>
+ingress:
+  #Host value for ingress object
+  host: <ingress-host>
+  #annotations for the ingress object
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-hash: sha1
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60" 
+
+jmsService:
+  enable: false
+  serviceName: <jms-service-name> 
+  servicePort: 8080
+
+tnsService:
+  enable: false
+  serviceName: <tns-service-name>
+  servicePort: 8081
+
+d2clientService:
+  enable: false
+  serviceName: <d2client-service-name>
+  servicePort: 8080
+
+d2configService:
+  enable: true
+  serviceName: <d2config-service-name>
+  servicePort: 8080
+
+daService:
+  enable: false
+  serviceName: <da-service-name>
+  servicePort: 8080
+
+appHostService:
+  enable: false
+  serviceName: <apphost-service-name> 
+  servicePort: 8080
+
+bamService:
+  enable: false
+  serviceName: <bam-service-name>
+  servicePort: 8080
+
+bpsService:
+  enable: false
+  serviceName: <bps-service-name>
+  servicePort: 8080
+
+xdaService:
+  enable: false
+  serviceName: <xda-service-name>
+  servicePort: 7000
+
+dsearchadminService:
+  enable: false
+  serviceName: <dsearchadmin-service-name>
+  servicePort: 9300
+
+indexagentService:
+  enable: false
+  serviceName: <indexagent-service-name>
+  servicePort: 9200
+
+dfsService:
+  enable: false
+  serviceName: <dfs-service-name>
+  servicePort: 8080

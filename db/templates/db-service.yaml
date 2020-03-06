@@ -1,0 +1,14 @@
+#Database Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    app: {{ .Values.serviceName }}
+spec:
+  ports:
+  - port: {{ .Values.database.dbServicePort }}
+    name: dbport
+  clusterIP: None
+  selector:
+    app: {{ .Values.serviceName }}

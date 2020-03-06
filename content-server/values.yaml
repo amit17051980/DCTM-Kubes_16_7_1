@@ -1,0 +1,189 @@
+# Default values for Content Server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+###User Name/ID
+serviceName: <sname>dcs-pg
+
+serviceAccountName: 
+
+### Docker Images ###  
+images:
+  repository : 10.194.42.173:5000
+  contentserver :
+    name : contentserver/centos/stateless/cs
+    tag : 16.7.1000.0847
+  pullPolicy : IfNotPresent
+  pullSecrets:
+
+### CS Secret ###
+secret:
+  name: cs-secret-config
+  
+### Docbroker ###
+docbroker:
+  serviceName: <sname>dbr
+  port: 1489
+  clusterSpace: docu.svc.cluster.local
+
+### Docbase ###
+docbase:
+  name: docbase1
+  id: 123456
+  owner: docbase1
+  existing: false
+  index: DM_DOCBASE1_DOCBASE
+  
+### Content Server ###  
+contentserver:
+  replicaCount: 2
+  docbrokersCount: 2
+  useDefaultSpace : true
+  aek:
+    name: aek_name
+  max_replica: 10
+  jmsProtocol: http
+  jmsVersion: wildfly17.0.1
+  csVersion: 16.7
+  readinessScript: /opt/dctm_docker/scripts/cs_readiness.sh
+  jmshost: <sname>dcs-pg-jms.docu.cfcr-lab.bp-paas.otxlab.net
+  tnshost: <sname>dcs-pg-tns.docu.cfcr-lab.bp-paas.otxlab.net
+  #Below parameter is to specify content server's locale, default 'en' locale is populated, to enable other locales use below parameter. Please check Readme.txt for all supported locales#
+  localeName: en
+### Upgrade parameters like 16.4 to 16.7
+upgrade:
+  majorUpgrade: false
+  currentVersion: 16.4
+  
+### Global repository details  ###
+#   set globalRepositoryName value to global repository name which has to be used as the global repository for the current docbase
+#       If it is set with some value then that will be used as the global repository for this repository, otherwise the current repository 
+#       will be configured as the global repository
+#   set globalRepositoryDocbrokerHost value to appropriate value, if not set it will use the current docbroker's host value
+#   set globalRepositoryDocbrokerPort value to appropriate value, if not set it will use the current docbroker's port value
+###
+globalRepository:
+  globalRepositoryName: ""
+  globalRepositoryDocbrokerHost: ""
+  globalRepositoryDocbrokerPort: ""
+    
+  
+###External CS###
+#Use the command "kubectl exec -ti tcp-port-availability-donotdelete-0 /bin/bash /execute.sh" to find available port to be configured for port below
+#tcp_route must be configured to one of the nodes ip. The node ip can be obtained by the command "kubectl get node -o wide"
+ExtCS:
+ enable: false  
+ tcp_route: 10.0.0.0
+ nativeExtPort: 
+ sslExtPort:
+ extDbrPort: 1491
+ isExtIPAddress: true
+
+### Database ###
+database:
+  host: <FQDN of database host>
+  databaseServiceName: MyPostgres
+  port: 5432
+  sslEnabled: false
+  sslCertPath: .postgresql/root.crt
+  sslMode: verify-ca
+  paasEnv: false
+
+### Thumbnail Server ###
+thumbnailServer:
+  configure: true
+  userMemArgs:
+  tnsProtocol: http
+### OTDS  ###
+otds:
+  configNameOption: HA
+  configureOTDS: true
+  otdsAPIsvc: otdsapi-highland.dev.bp-paas.otxlab.net
+  clientCapability: 0
+  userPrivileges: 0
+  userXPrivileges: 0
+  updateOTDScertonrestart: false
+### Ports ###
+ports:
+  docbaseport: 50000
+  docbasesslport: 50001
+  jmsport: 9080
+  tnsport: 8081
+  tnssslport: 8443  
+qaTest:
+  launchCSregr: false
+
+### Greylog ###
+graylog:
+  enable: true
+  image: 10.9.57.7/graylog-sidecar@sha256:8719e2f5601dca31123f7618cc1f7fc569503e32e0d78340fc293288bb04c422
+  imagePullPolicy: Always
+  server: 10.9.57.15
+  port: 9000
+  
+  ### Persistent Volume ###
+persistentVolume:
+  csdataPVCName: dcs-data-pvc
+  pvcAccessModes: ReadWriteMany
+  size: 1Gi
+  storageClass: bp-paas-nfs
+  ### Below parameter if there is already existing volume to hook up. Please check Readme.txt ###
+  existVolumePv:
+
+  ### Volume Claim Template###
+volumeClaimTemplate:
+  vctName: dcs-vct
+  vctAccessModes: ReadWriteOnce
+  size: 1Gi
+  storageClass: bp-paas-nfs
+  logVctAccessModes: ReadWriteOnce
+  logVctSize: 2Gi
+  logVctStorageClass: bp-paas-nfs
+  
+### S3 store enable ###
+s3Store:
+  enable: false
+  name:
+  proxyHost: 
+  proxyPort: 
+  proxyProtocal: http
+  noProxy: localhost,127.0.0.1,*.otxlab.net
+    
+### Custom Script Execution. enableBPMPVC is introduced for backward compatibility. If it is set to true, then the old xCP approach will be used. Note that this flag will be removed in future ###
+  
+custom:
+  scriptExecute: false
+  scriptinPVC: false
+  enableBPMPVC: true
+  scriptPVCname: 
+  PVCSubPath: 
+  versions: 
+ ### Provide the marker file names of client products in any order separated by comma. Before CS copying the custom scripts, these marker files presence are verified. 
+  markerFiles: 
+  
+### resources ###
+resources:
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+  requests:
+    cpu: 100m
+    memory: 400Mi
+    
+ingress:
+  enable: false
+    
+### extra Environment Variables ###
+extraEnv:
+
+### extra Volumes ###
+extraVolumes:
+
+### extra Volume Mounts ###
+extraVolumeMounts:
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,102 @@
+#Database StatefulSet
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.configName}}
+data:
+  entrypoint.sh: |-
+    #!/bin/bash
+    if [ ! -z $MAX_CONNECTIONS ]
+    then
+        echo 'alter system set max_connections = {{ .Values.alterParam.max_connections }};' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    if [ ! -z $SHARED_BUFFERS ]
+    then
+        echo 'alter system set shared_buffers = {{ .Values.alterParam.shared_buffers | quote }};' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    if [ ! -z $DEFAULT_STATISTICS_TARGET ]
+    then
+        echo 'alter system set default_statistics_target = {{ .Values.alterParam.default_statistics_target }} ;' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    if [ ! -z $MAINTENANCE_WORK_MEM ]
+    then
+        echo 'alter system set maintenance_work_mem = {{ .Values.alterParam.maintenance_work_mem | quote }};' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    if [ ! -z $EFFECTIVE_CACHE_SIZE ]
+    then
+        echo 'alter system set effective_cache_size = {{ .Values.alterParam.effective_cache_size | quote }};' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    if [ ! -z $WAL_BUFFERS ]
+    then
+        echo 'alter system set wal_buffers = {{ .Values.alterParam.wal_buffers | quote }};' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    if [ ! -z $WORK_MEM ]
+    then
+        echo 'alter system set work_mem = {{ .Values.alterParam.work_mem | quote }};' >> /docker-entrypoint-initdb.d/alter_param.sql
+    fi
+    /bin/sh -c '/usr/local/bin/docker-entrypoint.sh postgres'
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+   name: {{ .Values.serviceName }}
+spec:
+  serviceName: {{ .Values.serviceName }}
+  replicas: {{ .Values.database.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.serviceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.serviceName }}
+    spec:
+      containers:
+      - name: {{ .Values.serviceName | quote  }}
+        image: {{ .Values.images.repository }}/{{ .Values.images.db.name }}:{{ .Values.images.db.tag }}
+        imagePullPolicy: {{ .Values.images.pullPolicy }}
+        imagePullSecrets:
+          - name: {{ .Values.images.pullSecrets }}
+        command:
+        - /bin/entrypoint.sh
+        env:
+        - name: MAX_CONNECTIONS
+          value: {{ .Values.alterParam.max_connections | quote }}
+        - name: SHARED_BUFFERS
+          value: {{ .Values.alterParam.shared_buffers | quote }}
+        - name: DEFAULT_STATISTICS_TARGET
+          value: {{ .Values.alterParam.default_statistics_target | quote}} 
+        - name: MAINTENANCE_WORK_MEM
+          value: {{ .Values.alterParam.maintenance_work_mem | quote }}
+        - name: EFFECTIVE_CACHE_SIZE
+          value: {{ .Values.alterParam.effective_cache_size | quote }}
+        - name: WAL_BUFFERS
+          value: {{ .Values.alterParam.wal_buffers | quote }}
+        - name: WORK_MEM
+          value: {{ .Values.alterParam.work_mem | quote }}
+        ports:
+        - containerPort: {{ .Values.database.port }}
+          name: dbport
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/postgresql/data
+          subPath: data
+        - name: {{ .Values.configMap.volumeName }}
+          mountPath: /bin/entrypoint.sh
+          readOnly: true
+          subPath: entrypoint.sh
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory | quote  }}
+            cpu: {{ .Values.resources.requests.cpu | quote  }}
+          limits:
+            memory: {{ .Values.resources.limits.memory | quote  }}
+            cpu: {{ .Values.resources.limits.cpu | quote  }} 
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.serviceName }}-pvc
+        - name: {{ .Values.configMap.volumeName }}
+          configMap:
+            defaultMode: 0777
+            name: {{ .Values.configMap.configName }}

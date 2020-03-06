@@ -1,0 +1,76 @@
+# Default values for cleanup.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+###POD Name 
+podName: <podname>
+
+image:
+  repository: 10.8.176.180:5000
+  name: centos
+  tag: 7
+
+### Environment ###
+env:
+  domain: docu.svc.cluster.local
+
+### ConfigMap metadata ###
+configMap:
+  configName: <Uname>-nfs
+  namespace: docu
+  volumeName: <Uname>-nfs-volume
+
+### Content Server ###  
+contentserver:
+  jmsVersion: wildfly11.0.0
+  csVersion: 16.7
+  installOwner: dmadmin
+  installOwnerUid: 1000
+  installOwnerPwd: password
+
+mount:
+  mountPathData: /opt/dctm/data
+  mountPathDeploy: /opt/dctm/wildfly11.0.0/server/DctmServer_MethodServer/deployments
+  mountPathShare: /opt/dctm/share
+  mountpoints:
+    Data: <cs-pod-data>
+    Deploy: <cs-pod-deploy>
+    Share: <cs-pod-share>
+
+### Persistent Volume ###
+persistentVolume:
+  csdataPVCClaimName: nfs-volume-claim
+  csdataPVCName: dcs-data-pvc-nfs
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

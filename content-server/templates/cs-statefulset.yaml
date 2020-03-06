@@ -1,0 +1,438 @@
+#CS StatefulSet
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+   name: {{ .Values.serviceName }}
+spec:
+  serviceName: {{ .Values.serviceName }}
+  replicas: {{ .Values.contentserver.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.serviceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.serviceName }}
+    spec:
+      serviceAccountName : {{ .Values.serviceAccountName }}
+      containers:
+{{ if eq .Values.graylog.enable true }}
+      - name: graylog-sidecar-{{ .Values.serviceName }}
+        image: {{ .Values.graylog.image | quote }}
+        imagePullPolicy: {{ .Values.graylog.imagePullPolicy }}
+        env:
+        - name: GRAYLOG_SERVER
+          value: {{ .Values.graylog.server | quote }}
+        - name: GRAYLOG_PORT
+          value: {{ .Values.graylog.port | quote }}
+        - name: TAGS
+          value: "[\"linux\",\"apache\"]"
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: NAMESPACE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+          - name: shared-logs
+            mountPath: /pod-data
+{{ end }}
+      - name: {{ .Values.serviceName }}
+        image: {{ .Values.images.repository }}/{{ .Values.images.contentserver.name }}:{{ .Values.images.contentserver.tag }}
+        imagePullPolicy: {{ .Values.images.pullPolicy }}
+        imagePullSecrets:
+          - name: {{ .Values.images.pullSecrets }}
+        readinessProbe:
+          exec: {
+            command: [
+              bash,
+              -c,
+              {{ .Values.contentserver.readinessScript }}
+            ]            
+          }
+          initialDelaySeconds: 300
+          periodSeconds: 120
+          failureThreshold: 2
+          successThreshold: 1
+          timeoutSeconds: 60
+        env:
+        - name: KUBERNETES
+          value: "true"
+        - name: DOCBROKERS_COUNT
+          value: {{ .Values.contentserver.docbrokersCount | quote}}
+        - name: DOCBROKER_SERVICE_NAME
+          value: {{ .Values.docbroker.serviceName  }}
+        - name: DOCBROKER_CLUSTER_SPACE
+          value: {{ .Values.docbroker.clusterSpace  }}
+        - name: DOCBROKER_PORT
+          value: {{ .Values.docbroker.port | quote }}        
+        - name: CONTAINER_NAME
+          value: {{ .Values.serviceName }}
+        - name: DATABASE_HOST
+          value: {{ .Values.database.host  }}
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: dbUserName
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: dbPassword
+        - name: DATABASE_SERVER_PORT
+          value: {{ .Values.database.port | quote }}
+        - name: DATABASE_SERVICE_NAME
+          value: {{ .Values.database.databaseServiceName  }}
+        - name: DATABASE_SSL_SUPPORT
+          value: {{ .Values.database.sslEnabled | quote }}
+        - name: DATABASE_SSL_CERTIFICATE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: dbCertificate
+        - name: DATABASE_SSL_MODE
+          value: {{ .Values.database.sslMode | quote }}
+        - name: DATABASE_SSL_CERT_PATH
+          value: {{ .Values.database.sslCertPath | quote }}
+        - name: DATABASE_PAAS_ENV
+          value: {{ .Values.database.paasEnv | quote }}
+        - name: ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: rootPassword
+        - name: INSTALL_OWNER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: installOwner
+        - name: INSTALL_OWNER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: installOwnerPassword
+        - name: DOCBASE_NAME
+          value: {{ .Values.docbase.name  }}
+        - name: DOCBASE_OWNER_NAME
+          value: {{ .Values.docbase.owner }}
+        - name: USE_EXISTING_DATABASE_ACCOUNT
+          value: {{ .Values.docbase.existing | quote }}
+        - name: INDEXSPACE_NAME
+          value: {{ .Values.docbase.index }}          
+        - name: GLOBAL_REGISTRY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: globalRegistryPassword
+        - name: GLOBAL_REPOSITORY_NAME
+          value: {{ .Values.globalRepository.globalRepositoryName  }}
+        - name: GLOBAL_REPOSITORY_DOCBROKER_PORT
+          value: {{ .Values.globalRepository.globalRepositoryDocbrokerPort | quote }}
+        - name: GLOBAL_REPOSITORY_DOCBROKER_HOST
+          value: {{ .Values.globalRepository.globalRepositoryDocbrokerHost  }}
+        - name: AEK_PASSPHRASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: aekPassphrase
+        - name: AEK_ALGORITHM
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: aekAlgorithm
+        - name: AEK_NAME
+          value: {{ .Values.contentserver.aek.name  }}
+        - name: CONFIGURE_THUMBNAIL_SERVER
+          value: {{ .Values.thumbnailServer.configure | quote  }}
+      {{- if .Values.upgrade.majorUpgrade }}
+        - name: MAJOR_UPGRADE
+          value: {{ .Values.upgrade.majorUpgrade | quote }}
+        - name: CURRENT_VERSION
+          value: {{ .Values.upgrade.currentVersion | quote }}
+      {{- end }}
+        - name: USER_MEM_ARGS
+          value: {{ .Values.thumbnailServer.userMemArgs  }}
+        - name: APP_SERVER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: appServerAdminPassword
+        - name: DOCBASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbasePassword
+        - name: DOCBASE_ID
+          value: {{ .Values.docbase.id | quote  }}
+        - name: THUMBNAIL_SERVER_PORT
+          value: {{ .Values.ports.tnsport | quote  }}
+        - name: THUMBNAIL_SERVER_SSL_PORT
+          value: {{ .Values.ports.tnssslport | quote }}        
+        - name: CONTENTSERVER_PORT
+          value: {{ .Values.ports.docbaseport | quote  }}
+        - name: USE_DEFAULT_SPACE
+          value: {{ .Values.contentserver.useDefaultSpace | quote  }}      
+        - name: RECORD_MANAGER_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesRecordManager
+        - name: PRM_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesPRM
+        - name: FED_RECD_SERVICE_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesFedRecdService
+        - name: RPS_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesRPS 
+        - name: SNAPLOCKSTORE_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesSnaplockstore
+        - name: XMLSTORE_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesXMLstore
+        - name: STORAGEAWARE_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesStorageaware
+        - name: TRUSTED_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesTrusted
+        - name: HIGH_VOLUME_SERVER_LICENSE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: docbaseLicensesHighVolumeServer
+        - name: JMS_HOST
+          value: {{ .Values.contentserver.jmshost }}
+        - name: TNS_HOST
+          value: {{ .Values.contentserver.tnshost }}
+        - name: JMS_PROTOCOL
+          value: {{ .Values.contentserver.jmsProtocol }}          
+        - name: TNS_PROTOCOL
+          value: {{ .Values.thumbnailServer.tnsProtocol }}          
+        - name: LAUNCH_CSREGR
+          value: {{ .Values.qaTest.launchCSregr | quote }}
+        - name: CONFIG_NAME_OPTION
+          value: {{ .Values.otds.configNameOption }}
+        - name: CONFIGURE_OTDS
+          value: {{ .Values.otds.configureOTDS | quote}}
+        - name: OTDS_API_SVC
+          value: {{ .Values.otds.otdsAPIsvc }}
+        - name: OTDS_USERS_CLIENT_CAPABILITY
+          value: {{ .Values.otds.clientCapability | quote}}
+        - name: OTDS_USERS_PRIVILEGES
+          value: {{ .Values.otds.userPrivileges | quote}}
+        - name: OTDS_USERS_XPRIVILEGES
+          value: {{ .Values.otds.userXPrivileges | quote}}
+        - name: UPDATE_OTDSCERT_RESTART
+          value: {{ .Values.otds.updateOTDScertonrestart | quote}}
+        - name: MAX_REPLICA
+          value: {{ .Values.contentserver.max_replica | quote }}
+        - name: EXT_DBR_PROJECTION_ENABLE
+          value: {{ .Values.ExtCS.enable | quote }}        
+        - name: EXT_DBR_DOCBROKER_PORT
+          value: {{ .Values.ExtCS.extDbrPort | quote }}
+        - name: CS_EXT_SERVICE_NAME
+          value: {{ .Values.ExtCS.tcp_route | quote }}
+        - name: CS_EXT_SERVICE_PORT
+          value: {{ .Values.ExtCS.nativeExtPort | quote }}
+        - name: CS_EXT_IP_ADDRESS
+          value: {{ .Values.ExtCS.isExtIPAddress | quote }}
+        - name: CS_LOCALE_NAME
+          value: {{ .Values.contentserver.localeName | quote }}          
+        - name: CUST_SCRIPT_EXE
+          value: {{ .Values.custom.scriptExecute | quote }}
+        - name: CUST_SCRIPT_IN_PVC
+          value: {{ .Values.custom.scriptinPVC | quote }}    
+      {{- if .Values.custom.scriptinPVC }}
+        - name: CUST_SCRIPT_VERSIONS
+          value: {{ .Values.custom.versions }}
+        - name: CUST_SCRIPT_MARKER_FILES
+          value: {{ .Values.custom.markerFiles }}
+      {{- end }}    
+      {{- if .Values.s3Store.enable }}
+        - name: S3_STORE_ENABLE
+          value: {{ .Values.s3Store.enable | quote }}
+        - name: S3_STORE_NAME
+          value: {{ .Values.s3Store.name }}
+        - name: S3_STORE_PROXY_HOST
+          value: {{ .Values.s3Store.proxyHost }}
+        - name: S3_STORE_PROXY_PORT
+          value: {{ .Values.s3Store.proxyPort | quote }}
+        - name: S3_STORE_PROXY_PROTOCAL
+          value: {{ .Values.s3Store.proxyProtocal }}
+        - name: S3_STORE_NO_PROXY
+          value: {{ .Values.s3Store.noProxy | quote }}
+        - name: S3_STORE_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: s3StoreBaseUrl
+        - name: S3_STORE_CREDENTIAL_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: s3StoreCredentialID
+        - name: S3_STORE_CREDENTIAL_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: s3StoreCredentialKEY
+   
+      {{- end }}
+{{- if .Values.extraEnv }}
+{{ toYaml .Values.extraEnv | indent 8 }}
+{{- end }}
+        ports:
+        - containerPort: {{ .Values.ports.docbaseport }}
+          name: docbaseport
+        - containerPort: {{ .Values.ports.docbasesslport }}
+          name: docbasesslport                                  
+        - containerPort: {{ .Values.ports.jmsport }}
+          name: jmsport
+        - containerPort: {{ .Values.ports.tnsport }}
+          name: tnsport
+        - containerPort: {{ .Values.ports.tnssslport }}
+          name: tnssslport
+        volumeMounts:
+        - mountPath: /opt/dctm/odbc
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: odbc
+        - mountPath: /opt/dctm/dba/auth
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: dba/auth
+        - mountPath: /opt/dctm/dba/config
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: dba/config
+        - mountPath: /opt/dctm/dba/java_methods
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: dba/java_methods
+        - mountPath: /opt/dctm/dba/secure
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: dba/secure
+        - mountPath: /opt/dctm/kube
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: kube          
+        - mountPath: /opt/dctm/share
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: share/{{ .Values.serviceName }}
+{{- if .Values.custom.enableBPMPVC }}
+        - mountPath: /opt/dctm/{{ .Values.contentserver.jmsVersion }}/server/DctmServer_MethodServer/deployments/bpm.ear
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: deployments/{{ .Values.serviceName }}
+{{- end }}
+        - mountPath: /opt/dctm/config
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: config
+        - mountPath: /opt/dctm/mdserver_conf
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: mdserverconf
+        - mountPath: /opt/dctm/product/{{ .Values.contentserver.csVersion }}/thumbsrv/conf
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: thumb/conf
+        - mountPath: /opt/dctm/product/{{ .Values.contentserver.csVersion }}/thumbsrv/container/webapps/thumbsrv/WEB-INF
+          name: {{ .Values.volumeClaimTemplate.vctName }}
+          subPath: thumb/webinf
+        - mountPath: /opt/dctm/data
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: data/{{ .Values.serviceName }}
+{{- if .Values.custom.scriptinPVC }}
+        - mountPath: /opt/dctm_docker/customscriptpvc
+          name: custom-script-pvc
+          subPath: {{ .Values.custom.PVCSubPath }}
+{{- end }}
+        - mountPath: /opt/dctm_docker/cstests
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: cstests/testdriver/{{ .Values.serviceName }}         
+        - mountPath: /opt/dctm/dba/log
+          name: shared-logs
+          subPath: dba
+        - mountPath: /opt/dctm/{{ .Values.contentserver.jmsVersion }}/server/DctmServer_MethodServer/log
+          name: shared-logs
+          subPath: DctmServer_MethodServer/log
+        - mountPath: /opt/dctm/{{ .Values.contentserver.jmsVersion }}/server/DctmServer_MethodServer/logs
+          name: shared-logs
+          subPath: DctmServer_MethodServer/logs
+        - mountPath: /opt/dctm/product/{{ .Values.contentserver.csVersion }}/install/logs/
+          name: shared-logs
+          subPath: install
+        - mountPath: /dctm/product/{{ .Values.contentserver.csVersion }}/thumbsrv/container/logs
+          name: shared-logs
+          subPath: thumbsrv_container
+        - mountPath: /opt/dctm/product/{{ .Values.contentserver.csVersion }}/thumbsrv/configurator/logs
+          name: shared-logs
+          subPath: thumbsrv_configurator
+        - mountPath: /opt/dctm/logs
+          name: shared-logs
+          subPath: dfc
+{{- if .Values.extraVolumeMounts }}
+{{ toYaml .Values.extraVolumeMounts | indent 8 }}
+{{- end }}
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory | quote  }}
+            cpu: {{ .Values.resources.requests.cpu | quote  }}
+          limits:
+            memory: {{ .Values.resources.limits.memory | quote  }}
+            cpu: {{ .Values.resources.limits.cpu | quote  }} 
+      volumes:
+{{ if eq .Values.graylog.enable true }}
+        - name: shared-logs
+          emptyDir: {}
+{{ end }}
+        - name: {{ .Values.persistentVolume.csdataPVCName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.serviceName }}-pvc
+{{- if .Values.custom.scriptinPVC }}
+        - name: custom-script-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Values.custom.scriptPVCname }}
+{{- end }}
+{{- if .Values.extraVolumes }}
+{{ toYaml .Values.extraVolumes | indent 8 }}
+{{- end }}
+      restartPolicy: Always
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.volumeClaimTemplate.vctName }}
+    spec:
+      accessModes:
+        - {{ .Values.volumeClaimTemplate.vctAccessModes }}
+      resources:
+         requests:
+            storage: {{ .Values.volumeClaimTemplate.size }}
+      storageClassName: {{ .Values.volumeClaimTemplate.storageClass }}
+{{ if eq .Values.graylog.enable false }}
+  - metadata:
+      name: shared-logs
+    spec:
+      accessModes:
+        - {{ .Values.volumeClaimTemplate.logVctAccessModes }}
+      resources:
+         requests:
+            storage: {{ .Values.volumeClaimTemplate.logVctSize }}
+      storageClassName: {{ .Values.volumeClaimTemplate.logVctStorageClass }}
+{{ end }}

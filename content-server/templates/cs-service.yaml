@@ -1,0 +1,76 @@
+#Servics
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    app: {{ .Values.serviceName }}
+spec:
+  ports:
+  - port: {{ .Values.ports.docbaseport }}
+    name: docbaseport
+  - port: {{ .Values.ports.docbasesslport }}
+    name: docbasesslport              
+  clusterIP: None
+  selector:
+    app: {{ .Values.serviceName }}
+---
+#JMS Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}-jms-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.ports.jmsport }}
+  selector:
+    app: {{ .Values.serviceName }}
+---
+#TNS Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}-tns-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.ports.tnsport }}
+  selector:
+    app: {{ .Values.serviceName }}
+---
+{{ if eq .Values.ingress.enable true }}
+#JMS Ingress Object
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.serviceName }}-jms-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  rules:
+  - host: {{ .Values.contentserver.jmshost }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Values.serviceName }}-jms-service
+          servicePort: {{ .Values.ports.jmsport }}
+        path: /
+---
+#TNS Ingress Object
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.serviceName }}-tns-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  rules:
+  - host: {{ .Values.contentserver.tnshost }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .Values.serviceName }}-tns-service
+          servicePort: {{ .Values.ports.tnsport }}
+        path: /thumbsrv/getThumbnail
+{{ end }}

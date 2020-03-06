@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.configName}}
+  namespace:  {{ .Values.configMap.namespace }}
+data:
+  entrypoint.sh: |-
+    #!/bin/bash
+    groupadd -g {{ .Values.contentserver.installOwnerUid }} {{ .Values.contentserver.installOwner }}
+    useradd -u {{ .Values.contentserver.installOwnerUid }} -g {{ .Values.contentserver.installOwnerUid }} {{ .Values.contentserver.installOwner }}
+    echo {{ default "" .Values.contentserver.installOwnerPwd | b64enc | quote }}  | passwd --stdin {{ .Values.contentserver.installOwner }}
+    su - {{ .Values.contentserver.installOwner }} -c "rm -frR {{ .Values.mount.mountPathData }}/{{ .Values.mount.mountpoints.Data }}"
+    su - {{ .Values.contentserver.installOwner }} -c "rm -frR {{ .Values.mount.mountPathDeploy }}/{{ .Values.mount.mountpoints.Deploy }}"
+    su - {{ .Values.contentserver.installOwner }} -c "rm -frR {{ .Values.mount.mountPathShare }}/{{ .Values.mount.mountpoints.Share }}"
+    rm -frR {{ .Values.mount.mountPathData }}/{{ .Values.mount.mountpoints.Data }}
+    rm -frR {{ .Values.mount.mountPathDeploy }}/{{ .Values.mount.mountpoints.Deploy }}
+    rm -frR {{ .Values.mount.mountPathShare }}/{{ .Values.mount.mountpoints.Share }}
+    exit 0
+---
+#StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+   name: {{ .Values.podName }}
+spec:
+  serviceName: {{ .Values.podName }}
+  selector:
+    matchLabels:
+      app: {{ .Values.podName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.podName }}
+    spec:
+      containers:
+      - name: {{ .Values.podName }}
+        image: {{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        command:
+        - /bin/entrypoint.sh
+        env:
+        - name: INSTALL_OWNER
+          value: {{ .Values.contentserver.installOwner }}
+        - name: DATA_MOUNT_POINT
+          value: {{ .Values.mount.mountpoints.Data }}
+        - name: DEPLOY_MOUNT_POINT
+          value: {{ .Values.mount.mountpoints.Deploy }} 
+        - name: SHARE_MOUNT_POINT
+          value: {{ .Values.mount.mountpoints.Share }}
+        volumeMounts:
+        - name: {{ .Values.configMap.volumeName }}
+          mountPath: /bin/entrypoint.sh
+          readOnly: true
+          subPath: entrypoint.sh
+        - mountPath: {{ .Values.mount.mountPathData }}
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: data
+        - mountPath: {{ .Values.mount.mountPathDeploy }}
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: deployments
+        - mountPath: {{ .Values.mount.mountPathShare }}
+          name: {{ .Values.persistentVolume.csdataPVCName }}
+          subPath: share
+      volumes:
+        - name: {{ .Values.persistentVolume.csdataPVCName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.csdataPVCClaimName }}
+        - name: {{ .Values.configMap.volumeName }}
+          configMap:
+            defaultMode: 0777
+            name: {{ .Values.configMap.configName }}

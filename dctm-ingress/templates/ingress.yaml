@@ -1,0 +1,87 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingressPrefix }}-ingress
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  rules:
+  - http:
+      paths:
+    {{- if .Values.jmsService.enable }}
+      - backend:
+          serviceName: {{ .Values.jmsService.serviceName }}
+          servicePort: {{ .Values.jmsService.servicePort }}
+        path: /DmMethods/servlet/DoMethod
+    {{- end }}
+    {{- if .Values.tnsService.enable }}
+      - backend:
+          serviceName: {{ .Values.tnsService.serviceName }}
+          servicePort: {{ .Values.tnsService.servicePort }}
+        path: /thumbsrv/getThumbnail
+    {{- end }}
+    {{- if .Values.d2clientService.enable }}
+      - backend:
+          serviceName: {{ .Values.d2clientService.serviceName }}
+          servicePort: {{ .Values.d2clientService.servicePort }}
+        path: /D2
+    {{- end }}
+    {{- if .Values.d2configService.enable }}
+      - backend:
+          serviceName: {{ .Values.d2configService.serviceName }}
+          servicePort: {{ .Values.d2configService.servicePort }}
+        path: /D2-Config
+    {{- end }}
+    {{- if .Values.daService.enable }}
+      - backend:
+          serviceName: {{ .Values.daService.serviceName }}
+          servicePort: {{ .Values.daService.servicePort }}
+        path: /da
+    {{- end }}
+    {{- if .Values.appHostService.enable }}
+      - backend:
+          serviceName: {{ .Values.appHostService.serviceName }}
+          servicePort: {{ .Values.appHostService.servicePort }}
+        path: /
+    {{- end }}
+    {{- if .Values.bamService.enable }}
+      - backend:
+          serviceName: {{ .Values.bamService.serviceName }}
+          servicePort: {{ .Values.bamService.servicePort }}
+        path: /bam-server
+    {{- end }}
+    {{- if .Values.bpsService.enable }}
+      - backend:
+          serviceName: {{ .Values.bpsService.serviceName }}
+          servicePort: {{ .Values.bpsService.servicePort }}
+        path: /bps
+    {{- end }}
+    {{- if .Values.xdaService.enable }}
+      - backend:
+          serviceName: {{ .Values.xdaService.serviceName }}
+          servicePort: {{ .Values.xdaService.servicePort }}
+        path: /xda	
+    {{- end }}
+    {{- if .Values.dsearchadminService.enable }}
+      - backend:
+          serviceName: {{ .Values.dsearchadminService.serviceName }}
+          servicePort: {{ .Values.dsearchadminService.servicePort }}
+        path: /dsearchadmin
+    {{- end }}
+    {{- if .Values.indexagentService.enable }}
+      - backend:
+          serviceName: {{ .Values.indexagentService.serviceName }}
+          servicePort: {{ .Values.indexagentService.servicePort }}
+        path: /IndexAgent
+    {{- end }}
+    {{- if .Values.dfsService.enable }}
+      - backend:
+          serviceName: {{ .Values.dfsService.serviceName }}
+          servicePort: {{ .Values.dfsService.servicePort }}
+        path: /dfs
+    {{- end -}}
+    {{- if eq ( .Values.ingress.host | toString | regexFind "\\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.|$)){4}\\b") ("" | toString) }}
+    host: {{ .Values.ingress.host }}
+    {{- end }}

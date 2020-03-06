@@ -1,0 +1,14 @@
+{{- if .Values.custom.createPVC }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.custom.scriptPVCname }}
+  namespace: {{ .Values.nameSpace }}
+spec:
+  accessModes:
+    - {{ .Values.persistentVolume.pvcAccessModes }}
+  storageClassName: {{ .Values.persistentVolume.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.size }}
+{{- end }}

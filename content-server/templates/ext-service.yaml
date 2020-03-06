@@ -1,0 +1,39 @@
+{{ if eq .Values.ExtCS.enable true }}
+#CSExtservice
+apiVersion: v1
+kind: Service
+metadata:
+  name: csnativeext-{{ .Values.serviceName }}
+  labels:
+    app: csnativeext-{{ .Values.serviceName }}    
+spec:
+  sessionAffinity: ClientIP
+  type: NodePort
+  ports:
+  - port: {{ .Values.ports.docbaseport }}
+    nodePort: {{ .Values.ExtCS.nativeExtPort }}
+    protocol: TCP
+    name: csnativeport
+    targetPort: {{ .Values.ports.docbaseport }}
+  selector:
+    app: {{ .Values.serviceName }}
+---
+#Nodeport Service exposing content server ssl port
+apiVersion: v1
+kind: Service
+metadata:
+  name: cssslext-{{ .Values.serviceName }}
+  labels:
+    app: cssslext-{{ .Values.serviceName }}    
+spec:
+  sessionAffinity: ClientIP
+  type: NodePort
+  ports:
+  - port: {{ .Values.ports.docbasesslport }}
+    nodePort: {{ .Values.ExtCS.sslExtPort }}
+    protocol: TCP
+    name: cssslport
+    targetPort: {{ .Values.ports.docbasesslport }}
+  selector:
+    app: {{ .Values.serviceName }}
+{{ end }}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.serviceName }}.configmap
+  namespace:  {{ .Values.configMap.namespace }}
+
+data:
+  dfc.properties: |
+    dfc.docbroker.host[0]: {{ .Values.serviceName }}-0.{{ .Values.serviceName }}.{{ .Values.env.domain  }}
+    dfc.docbroker.port[0]: {{ .Values.docbroker.port }}
+    dfc.docbroker.host[1]: {{ .Values.serviceName }}-1.{{ .Values.serviceName }}.{{ .Values.env.domain  }}
+    dfc.docbroker.port[1]: {{ .Values.docbroker.port }}
+    dfc.globalregistry.repository: {{ .Values.globalregistry.repository }}
+    dfc.globalregistry.username: {{ .Values.globalregistry.username }}

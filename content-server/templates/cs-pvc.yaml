@@ -1,0 +1,15 @@
+#CS PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.serviceName}}-pvc
+spec:
+  accessModes:
+    - {{ .Values.persistentVolume.pvcAccessModes }}
+  storageClassName: {{ .Values.persistentVolume.storageClass }}
+{{ if .Values.persistentVolume.existVolumePv }}
+  volumeName: {{ .Values.persistentVolume.existVolumePv }}
+{{ end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.size }}

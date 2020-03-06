@@ -1,0 +1,5 @@
+apiVersion: v1
+appVersion: 16.7.1000.0847
+description: A Content Server Helm chart for Kubernetes
+name: content-server
+version: 16.7.1000-0847
