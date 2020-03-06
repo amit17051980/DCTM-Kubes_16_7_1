@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: 16.7.1000.0847
-description: A Helm chart for secrets of Content Server, Database
-name: cs-secrets
-version: 16.7.1000-0847
