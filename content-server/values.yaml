@@ -3,13 +3,13 @@
 # Declare variables to be passed into your templates.
 
 ###User Name/ID
-serviceName: <sname>dcs-pg
+serviceName: dctmdcs-pg
 
 serviceAccountName: 
 
 ### Docker Images ###  
 images:
-  repository : 10.194.42.173:5000
+  repository : localhost:5000
   contentserver :
     name : contentserver/centos/stateless/cs
     tag : 16.7.1000.0847
@@ -22,7 +22,7 @@ secret:
   
 ### Docbroker ###
 docbroker:
-  serviceName: <sname>dbr
+  serviceName: dctmdbr
   port: 1489
   clusterSpace: docu.svc.cluster.local
 
@@ -36,8 +36,8 @@ docbase:
   
 ### Content Server ###  
 contentserver:
-  replicaCount: 2
-  docbrokersCount: 2
+  replicaCount: 1
+  docbrokersCount: 1
   useDefaultSpace : true
   aek:
     name: aek_name
@@ -46,8 +46,8 @@ contentserver:
   jmsVersion: wildfly17.0.1
   csVersion: 16.7
   readinessScript: /opt/dctm_docker/scripts/cs_readiness.sh
-  jmshost: <sname>dcs-pg-jms.docu.cfcr-lab.bp-paas.otxlab.net
-  tnshost: <sname>dcs-pg-tns.docu.cfcr-lab.bp-paas.otxlab.net
+  jmshost: dctmdcs-pg-jms.docu.cfcr-lab.bp-paas.otxlab.net
+  tnshost: dctmdcs-pg-tns.docu.cfcr-lab.bp-paas.otxlab.net
   #Below parameter is to specify content server's locale, default 'en' locale is populated, to enable other locales use below parameter. Please check Readme.txt for all supported locales#
   localeName: en
 ### Upgrade parameters like 16.4 to 16.7
@@ -81,7 +81,7 @@ ExtCS:
 
 ### Database ###
 database:
-  host: <FQDN of database host>
+  host: dctmdb-pg.default.svc.cluster.local
   databaseServiceName: MyPostgres
   port: 5432
   sslEnabled: false
@@ -115,7 +115,7 @@ qaTest:
 
 ### Greylog ###
 graylog:
-  enable: true
+  enable: false
   image: 10.9.57.7/graylog-sidecar@sha256:8719e2f5601dca31123f7618cc1f7fc569503e32e0d78340fc293288bb04c422
   imagePullPolicy: Always
   server: 10.9.57.15
@@ -126,7 +126,7 @@ persistentVolume:
   csdataPVCName: dcs-data-pvc
   pvcAccessModes: ReadWriteMany
   size: 1Gi
-  storageClass: bp-paas-nfs
+  storageClass: standard
   ### Below parameter if there is already existing volume to hook up. Please check Readme.txt ###
   existVolumePv:
 
@@ -135,10 +135,10 @@ volumeClaimTemplate:
   vctName: dcs-vct
   vctAccessModes: ReadWriteOnce
   size: 1Gi
-  storageClass: bp-paas-nfs
+  storageClass: standard
   logVctAccessModes: ReadWriteOnce
   logVctSize: 2Gi
-  logVctStorageClass: bp-paas-nfs
+  logVctStorageClass: standard
   
 ### S3 store enable ###
 s3Store:

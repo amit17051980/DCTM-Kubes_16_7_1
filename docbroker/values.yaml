@@ -3,11 +3,11 @@
 # Declare variables to be passed into your templates.
 
 ###User Name/ID
-serviceName: <sname>dbr
+serviceName: dctmdbr
 
 ### Docker Images ###  
 images:
-  repository : 10.194.42.173:5000
+  repository : localhost:5000
   contentserver :
     name : contentserver/centos/stateless/cs
     tag : 16.7.1000.0847
@@ -25,7 +25,7 @@ secret:
   
 ### Dockbroker ###
 docbroker:
-  replicaCount: 2
+  replicaCount: 1
   installerUI : silent
 
 #External Docbroker
@@ -37,7 +37,7 @@ ExtDocbroker:
   
 ### Greylog ###
 graylog:
-  enable: true
+  enable: false
   image: 10.9.57.7/graylog-sidecar@sha256:8719e2f5601dca31123f7618cc1f7fc569503e32e0d78340fc293288bb04c422
   server: 10.9.57.15
   port: 9000
@@ -54,10 +54,10 @@ persistentVolume:
   vctName: dbr-vct
   accessModes: ReadWriteOnce
   size: 1Gi
-  storageClass: bp-paas-nfs
+  storageClass: standard
   logVctAccessModes: ReadWriteOnce
   logVctSize: 2Gi
-  logVctStorageClass: bp-paas-nfs
+  logVctStorageClass: standard
    
  ### resources ###
 resources:

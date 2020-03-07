@@ -3,11 +3,11 @@
 # Declare variables to be passed into your templates.
 
 ###User Name/ID
-serviceName: <sname>db-pg
+serviceName: dctmdb-pg
 
 ### Docker Images ###  
 images:
-  repository : 10.194.42.173:5000
+  repository : localhost:5000
   db :
     name : cs/pg
     tag : 10.3
@@ -24,12 +24,12 @@ database:
 persistentVolume:
   accessModes: ReadWriteOnce
   size: 2Gi
-  storageClass: bp-paas-nfs
+  storageClass: standard
 
 ### ConfigMap metadata ###
 configMap:
-  configName: <sname>-alter
-  volumeName: <sname>-alter-volume
+  configName: dctm-alter
+  volumeName: dctm-alter-volume
   
 alterParam:
   max_connections:
