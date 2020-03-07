@@ -24,7 +24,7 @@ secret:
 docbroker:
   serviceName: dctmdbr
   port: 1489
-  clusterSpace: docu.svc.cluster.local
+  clusterSpace: default.svc.cluster.local
 
 ### Docbase ###
 docbase:
@@ -40,7 +40,7 @@ contentserver:
   docbrokersCount: 1
   useDefaultSpace : true
   aek:
-    name: aek_name
+    name: aek.key
   max_replica: 10
   jmsProtocol: http
   jmsVersion: wildfly17.0.1
@@ -97,7 +97,7 @@ thumbnailServer:
 ### OTDS  ###
 otds:
   configNameOption: HA
-  configureOTDS: true
+  configureOTDS: false
   otdsAPIsvc: otdsapi-highland.dev.bp-paas.otxlab.net
   clientCapability: 0
   userPrivileges: 0
