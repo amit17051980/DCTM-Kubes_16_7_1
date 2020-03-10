@@ -109,6 +109,7 @@ Please remember to initialise the Tiller using 'helm init'. _**In this article w
 # Use cs-secrets/values.yaml to review the passwords
 helm install --name my-secrets cs-secrets/
 helm install --name my-db db/
+helm install --name my-docbroker docbroker/
 helm install --name my-cs content-server/
 ```
 
