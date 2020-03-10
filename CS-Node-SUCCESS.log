@@ -1,0 +1,419 @@
+In cs_startup.sh
+---------------------------------------------------------------------------------------
+initialize
+/opt/dctm_docker/kube_cs.sh: line 1417: $logfile: ambiguous redirect
+/opt/dctm_docker/kube_cs.sh: line 1417: $logfile: ambiguous redirect
+---------------------------------------------------------------------------------------
+validate_inputs
+Validating database server on dctmdb-pg.default.svc.cluster.local:5432 is running..
+---------------------------------------------------------------------------------------
+ping_database_server
+Pinging dctmdb-pg.default.svc.cluster.local:5432. Successful.
+Run rngd command
+
+Initalizing available sources
+
+Initalizing entropy source hwrng
+
+Enabling RDRAND rng support
+
+Initalizing entropy source rdrand
+
+Enabling JITTER rng support
+
+Initalizing entropy source jitter
+
+unable to adjust write_wakeup_threshold: Read-only file system
+containername: dctmdcs-pg containerlength: 10
+host index is 0
+ext docbroker ip : 
+server config name is docbase1
+---------------------------------------------------------------------------------------
+handle_kube_pvc
+---------------------------------------------------------------------------------------
+Setting documentum folders owner as install owner
+---------------------------------------------------------------------------------------
+update_app_server_credential
+App server Credential update is successful
+Old hostname is : f67c601b9329
+
+Welcome... Migration Utility invoked.
+ 
+Created new log File: /opt/dctm/product/16.7/install/external_apps/MigrationUtil/MigrationUtilLogs/DocbaseIdChange.log
+Skipping Docbase ID Changes...
+
+Please set wildflyVersion parameter in config.xml file.. Exiting..
+
+Migration Utility completed.
+ 
+Revert /opt/dctm/product/16.7/install/external_apps/MigrationUtil/config.xml
+---------------------------------------------------------------------------------------
+handle_install_owner_uid_change
+---------------------------------------------------------------------------------------
+handle_password_change
+/usr/share/cracklib/pw_dict.pwd.gz: No such file or directory
+Changing password for user dmadmin.
+passwd: all authentication tokens updated successfully.
+/usr/share/cracklib/pw_dict.pwd.gz: No such file or directory
+Changing password for user root.
+passwd: all authentication tokens updated successfully.
+---------------------------------------------------------------------------------------
+copy_dba_scripts
+---------------------------------------------------------------------------------------
+handle_start_docbase
+Setting
+DATABASE_HOST
+DATABASE_USER
+Setting values in /opt/dctm_docker/config/linux_config.properties
+USE_DEFAULT_SPACE
+Docbase Installation Started...
+Preparing to install
+Extracting the installation resources from the installer archive...
+Configuring the installer for this system's environment...
+
+Launching installer...
+
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.documentum.fc.client.security.impl.util.ClassContextFetcher (file:/opt/dctm/dfc/dfc.jar) to method java.lang.SecurityManager.getClassContext()
+WARNING: Please consider reporting this to the maintainers of com.documentum.fc.client.security.impl.util.ClassContextFetcher
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Docbase installation Completed....
+client_docbroker_host dctmdbr-0.dctmdbr.default.svc.cluster.local
+Stop Docbase
+Stopping Documentum server for repository: [docbase1]
+
+
+
+	OpenText Documentum iapi - Interactive API interface
+	Copyright (c) 2018. OpenText Corporation
+	All rights reserved.
+	Client Library Release 16.7.1000.0335
+
+
+Connecting to Server using docbase docbase1
+[DM_SESSION_I_SESSION_START]info:  "Session 0101e24080000502 started for user dmadmin."
+
+
+Connected to OpenText Documentum Server running Release 16.7.1000.0847  Linux64.Postgres
+Session id is s0
+API> shutdown,c,T,T
+...
+OK
+API> exit
+Bye
+Waiting for 90 seconds for server pid, 4060, to disappear.
+
+Tue Mar 10 21:58:52 UTC 2020: Waiting for shutdown of repository: [docbase1]
+Tue Mar 10 21:58:52 UTC 2020: checking for pid: 4060
+
+Tue Mar 10 21:59:02 UTC 2020: Waiting for shutdown of repository: [docbase1]
+Tue Mar 10 21:59:02 UTC 2020: checking for pid: 4060
+
+repository: [docbase1] has been shutdown
+checking that all children (4066 4081 4082 4088 4104 4121 4230 4248) have shutdown
+Start Docbase
+starting Documentum server for repository: [docbase1]
+with server log: [/opt/dctm/dba/log/docbase1.log]
+server pid: 4397
+Taking backup of odbc and odbcinst.ini
+---------------------------------------------------------------------------------------
+Copying dba files to kube backup
+Updating server config object proximity value from 2 to 1
+Server config object proximity value update failed for docbase : docbase1
+log file is /tmp/update_config_objects_dmbasic.out
+---------------------------------------------------------------------------------------
+handle_start_method_server
+---------------------------------------------------------------------------------------
+add_hosts_aliases
+MAX_REPLICA: 10
+Current Host
+dctmdcs-pg-1 dctmdcs-pg-1.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-2 dctmdcs-pg-2.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-3 dctmdcs-pg-3.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-4 dctmdcs-pg-4.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-5 dctmdcs-pg-5.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-6 dctmdcs-pg-6.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-7 dctmdcs-pg-7.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-8 dctmdcs-pg-8.dctmdcs-pg.default.svc.cluster.local
+dctmdcs-pg-9 dctmdcs-pg-9.dctmdcs-pg.default.svc.cluster.local
+enable JMS HA feature
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.documentum.fc.client.security.impl.util.ClassContextFetcher (file:/opt/dctm/dfc/dfc.jar) to method java.lang.SecurityManager.getClassContext()
+WARNING: Please consider reporting this to the maintainers of com.documentum.fc.client.security.impl.util.ClassContextFetcher
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+enabled JMS HA feature successfully
+JMSHAConfigUtil, update 'app_server_uri' in server amd 'base_uri' in JMS config objects
+JMSHAConfigUtil, updated 'app_server_uri' in server and 'base_uri' in JMS config objects successfully
+configure the JMS config object ids in server config objects
+Successfully configured the JMS config object ids in all server config objects of docbase docbase1
+JMS HA configuration is completed.
+stop content server
+Stopping Documentum server for repository: [docbase1]
+
+
+
+	OpenText Documentum iapi - Interactive API interface
+	Copyright (c) 2018. OpenText Corporation
+	All rights reserved.
+	Client Library Release 16.7.1000.0335
+
+
+Connecting to Server using docbase docbase1
+[DM_SESSION_I_SESSION_START]info:  "Session 0101e24080000908 started for user dmadmin."
+
+
+Connected to OpenText Documentum Server running Release 16.7.1000.0847  Linux64.Postgres
+Session id is s0
+API> shutdown,c,T,T
+...
+OK
+API> exit
+Bye
+Waiting for 90 seconds for server pid, 4397, to disappear.
+
+Tue Mar 10 22:02:36 UTC 2020: Waiting for shutdown of repository: [docbase1]
+Tue Mar 10 22:02:36 UTC 2020: checking for pid: 4397
+
+Tue Mar 10 22:02:46 UTC 2020: Waiting for shutdown of repository: [docbase1]
+Tue Mar 10 22:02:46 UTC 2020: checking for pid: 4397
+
+repository: [docbase1] has been shutdown
+checking that all children (4439 4451 4452 4465 4470 4489 4589 4606 4808) have shutdown
+Start content server
+starting Documentum server for repository: [docbase1]
+with server log: [/opt/dctm/dba/log/docbase1.log]
+server pid: 4955
+method server started
+Taking backup of the methodserver files
+JAVA_OPTS already set in environment; overriding default settings with values: -Xms1024m -Xmx1024m -Xss256k -XX:+DisableExplicitGC -Djava.net.preferIPv4Stack=true -Djboss.server.base.dir=/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer -Djava.locale.providers=COMPAT,SPI --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
+---------------------------------------------------------------------------------------
+handle_start_thumbnail_server
+USAGE : /opt/dctm_docker/thumbserverbuild/configure-thumbnail-server.sh DocbaseName DocbaseUsername DocbasePassword AekPassphrase Hostname Domain(optional)
+Checking the docbase connection....
+=========================================================================
+
+  JBoss Bootstrap Environment
+
+  JBOSS_HOME: /opt/dctm/wildfly17.0.1
+
+  JAVA: /opt/dctm/java64/JAVA_LINK/bin/java
+
+  JAVA_OPTS:  -server -Xms1024m -Xmx1024m -Xss256k -XX:+DisableExplicitGC -Djava.net.preferIPv4Stack=true -Djboss.server.base.dir=/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer -Djava.locale.providers=COMPAT,SPI --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED  --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED
+
+=========================================================================
+
+[0m22:03:28,681 INFO  [org.jboss.modules] (main) JBoss Modules version 1.9.1.Final
+[0m[0m22:03:29,685 INFO  [org.jboss.msc] (main) JBoss MSC version 1.4.8.Final
+[0m[0m22:03:29,705 INFO  [org.jboss.threads] (main) JBoss Threads version 2.3.3.Final
+[0m[0m22:03:29,888 INFO  [org.jboss.as] (MSC service thread 1-3) WFLYSRV0049: WildFly Full 17.0.1.Final (WildFly Core 9.0.2.Final) starting
+[0mDocbase is up and running.
+Configuring thumbnail server support to docbase1 docbase
+Preparing to install
+[0m22:03:31,305 INFO  [org.wildfly.security] (ServerService Thread Pool -- 24) ELY00001: WildFly Elytron version 1.9.1.Final
+[0mExtracting the installation resources from the installer archive...
+[33m22:03:31,583 WARN  [org.jboss.as.clustering.infinispan] (Controller Boot Thread) WFLYCLINF0004: The 'strategy' attribute of the 'eviction' element is no longer supported and will be ignored
+[0m[33m22:03:31,584 WARN  [org.jboss.as.clustering.infinispan] (Controller Boot Thread) WFLYCLINF0004: The 'strategy' attribute of the 'eviction' element is no longer supported and will be ignored
+[0mConfiguring the installer for this system's environment...
+[0m22:03:32,079 INFO  [org.jboss.as.controller.management-deprecated] (Controller Boot Thread) WFLYCTL0028: Attribute 'security-realm' in the resource at address '/core-service=management/management-interface=native-interface' is deprecated, and may be removed in a future version. See the attribute description in the output of the read-resource-description operation to learn more about the deprecation.
+[0m[0m22:03:32,190 INFO  [org.jboss.as.server.deployment.scanner] (DeploymentScanner-threads - 1) WFLYDS0004: Found bpm.ear in deployment directory. To trigger deployment create a file called bpm.ear.dodeploy
+[0m[0m22:03:32,197 INFO  [org.jboss.as.server.deployment.scanner] (DeploymentScanner-threads - 1) WFLYDS0004: Found ServerApps.ear in deployment directory. To trigger deployment create a file called ServerApps.ear.dodeploy
+[0m[0m22:03:32,205 INFO  [org.jboss.as.server.deployment.scanner] (DeploymentScanner-threads - 1) WFLYDS0004: Found acs.ear in deployment directory. To trigger deployment create a file called acs.ear.dodeploy
+[0m[0m22:03:32,279 INFO  [org.xnio] (MSC service thread 1-4) XNIO version 3.7.2.Final
+[0m[0m22:03:32,291 INFO  [org.xnio.nio] (MSC service thread 1-4) XNIO NIO Implementation Version 3.7.2.Final
+[0m[0m22:03:32,381 INFO  [org.jboss.remoting] (MSC service thread 1-3) JBoss Remoting version 5.0.12.Final
+[0m[0m22:03:32,467 INFO  [org.jboss.as.naming] (ServerService Thread Pool -- 49) WFLYNAM0001: Activating Naming Subsystem
+[0m[0m22:03:32,461 INFO  [org.jboss.as.clustering.infinispan] (ServerService Thread Pool -- 41) WFLYCLINF0001: Activating Infinispan subsystem.
+[0m[0m22:03:32,455 INFO  [org.jboss.as.connector] (MSC service thread 1-3) WFLYJCA0009: Starting JCA Subsystem (WildFly/IronJacamar 1.4.16.Final)
+[0m[0m22:03:32,452 INFO  [org.jboss.as.jsf] (ServerService Thread Pool -- 47) WFLYJSF0007: Activated the following JSF Implementations: [main]
+[0m[0m22:03:32,475 INFO  [org.jboss.as.connector.subsystems.datasources] (ServerService Thread Pool -- 36) WFLYJCA0004: Deploying JDBC-compliant driver class org.h2.Driver (version 1.4)
+[0m[0m22:03:32,490 INFO  [org.wildfly.extension.io] (ServerService Thread Pool -- 40) WFLYIO001: Worker 'default' has auto-configured to 4 core threads with 32 task threads based on your 2 available processors
+[0m[0m22:03:32,593 INFO  [org.jboss.as.security] (ServerService Thread Pool -- 56) WFLYSEC0002: Activating Security Subsystem
+[0m[0m22:03:32,599 INFO  [org.jboss.as.webservices] (ServerService Thread Pool -- 59) WFLYWS0002: Activating WebServices Extension
+[0m[0m22:03:32,580 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-4) WFLYJCA0018: Started Driver service with driver-name = h2
+[0m[0m22:03:32,590 INFO  [org.jboss.as.jaxrs] (ServerService Thread Pool -- 42) WFLYRS0016: RESTEasy version 3.7.0.Final
+[0m[0m22:03:32,582 INFO  [org.jboss.as.mail.extension] (MSC service thread 1-2) WFLYMAIL0001: Bound mail session [java:jboss/mail/Default]
+[0m[0m22:03:32,582 INFO  [org.jboss.as.naming] (MSC service thread 1-1) WFLYNAM0003: Starting Naming Service
+[0m[33m22:03:32,582 WARN  [org.jboss.as.txn] (ServerService Thread Pool -- 57) WFLYTX0013: The node-identifier attribute on the /subsystem=transactions is set to the default value. This is a danger for environments running multiple servers. Please make sure the attribute value is unique.
+[0m[0m22:03:32,692 INFO  [org.jboss.as.security] (MSC service thread 1-2) WFLYSEC0001: Current PicketBox version=5.0.3.Final
+[0m[33m22:03:32,748 WARN  [org.wildfly.clustering.web.undertow] (ServerService Thread Pool -- 58) WFLYCLWEBUT0007: No routing provider found for default-server; using legacy provider based on static configuration
+[0m[0m22:03:32,772 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) WFLYUT0003: Undertow 2.0.21.Final starting
+[0m[0m22:03:32,966 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 58) WFLYUT0014: Creating file handler for path '/opt/dctm/wildfly17.0.1/welcome-content' with options [directory-listing: 'false', follow-symlink: 'false', case-sensitive: 'true', safe-symlink-paths: '[]']
+[0m[0m22:03:33,041 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0012: Started server default-server.
+[0m[0m22:03:33,061 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-4) WFLYUT0018: Host default-host starting
+[0m[0m22:03:33,285 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0006: Undertow HTTP listener default listening on 0.0.0.0:9080
+[0m[0m22:03:33,472 INFO  [org.jboss.as.ejb3] (MSC service thread 1-1) WFLYEJB0493: EJB subsystem suspension complete
+[0m[0m22:03:33,585 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) WFLYJCA0001: Bound data source [java:jboss/datasources/ExampleDS]
+[0m[0m22:03:33,877 INFO  [org.jboss.as.patching] (MSC service thread 1-1) WFLYPAT0050: WildFly Full cumulative patch ID is: base, one-off patches include: none
+[0m[0m22:03:33,952 INFO  [org.wildfly.extension.messaging-activemq] (MSC service thread 1-3) WFLYMSGAMQ0075: AIO wasn't located on this platform, it will fall back to using pure Java NIO. Your platform is Linux, install LibAIO to enable the AIO journal and achieve optimal performance.
+[0m[0m22:03:34,030 INFO  [org.jboss.as.server.deployment.scanner] (MSC service thread 1-1) WFLYDS0013: Started FileSystemDeploymentService for directory /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments
+[0m[0m22:03:34,065 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0027: Starting deployment of "ServerApps.ear" (runtime-name: "ServerApps.ear")
+[0m[0m22:03:34,068 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0027: Starting deployment of "acs.ear" (runtime-name: "acs.ear")
+[0m[0m22:03:34,152 INFO  [org.jboss.as.remoting] (MSC service thread 1-3) WFLYRMT0001: Listening on 0.0.0.0:9084
+[0m[33m22:03:34,186 WARN  [org.jboss.metadata.ear.parser.jboss.JBossAppMetaDataParser] (MSC service thread 1-1) loader-repository element in jboss-app.xml is deprecated and has been ignored
+[0m[0m22:03:34,241 INFO  [org.jboss.ws.common.management] (MSC service thread 1-4) JBWS022052: Starting JBossWS 5.3.0.Final (Apache CXF 3.3.2) 
+[0m[0m22:03:34,253 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221000: live Message Broker is starting with configuration Broker Configuration (clustered=false,journalDirectory=/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/data/activemq/journal,bindingsDirectory=/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/data/activemq/bindings,largeMessagesDirectory=/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/data/activemq/largemessages,pagingDirectory=/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/data/activemq/paging)
+[0m[0m22:03:34,335 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221013: Using NIO Journal
+[0m[0m22:03:34,490 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221043: Protocol module found: [artemis-server]. Adding protocol support for: CORE
+[0m[0m22:03:34,494 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221043: Protocol module found: [artemis-amqp-protocol]. Adding protocol support for: AMQP
+[0m[0m22:03:34,497 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221043: Protocol module found: [artemis-hornetq-protocol]. Adding protocol support for: HORNETQ
+[0m[0m22:03:34,499 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221043: Protocol module found: [artemis-stomp-protocol]. Adding protocol support for: STOMP
+[0m[0m22:03:34,646 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221034: Waiting indefinitely to obtain live lock
+[0m[0m22:03:34,647 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221035: Live Server Obtained live lock
+[0m[0m22:03:34,951 INFO  [org.wildfly.extension.messaging-activemq] (MSC service thread 1-3) WFLYMSGAMQ0016: Registered HTTP upgrade for activemq-remoting protocol handled by http-acceptor acceptor
+[0m[0m22:03:34,956 INFO  [org.wildfly.extension.messaging-activemq] (MSC service thread 1-3) WFLYMSGAMQ0016: Registered HTTP upgrade for activemq-remoting protocol handled by http-acceptor-throughput acceptor
+[0m[0m22:03:34,951 INFO  [org.wildfly.extension.messaging-activemq] (MSC service thread 1-4) WFLYMSGAMQ0016: Registered HTTP upgrade for activemq-remoting protocol handled by http-acceptor acceptor
+[0m[0m22:03:34,970 INFO  [org.wildfly.extension.messaging-activemq] (MSC service thread 1-3) WFLYMSGAMQ0016: Registered HTTP upgrade for activemq-remoting protocol handled by http-acceptor-throughput acceptor
+[0m[0m22:03:35,330 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221007: Server is now live
+[0m[0m22:03:35,331 INFO  [org.apache.activemq.artemis.core.server] (ServerService Thread Pool -- 62) AMQ221001: Apache ActiveMQ Artemis Message Broker version 2.8.1 [default, nodeID=fc5a57d8-631a-11ea-8bee-0242ac11000a] 
+[0m[33m22:03:35,475 WARN  [org.apache.activemq.artemis.jms.server] (ServerService Thread Pool -- 66) AMQ122005: Invalid "host" value "0.0.0.0" detected for "http-connector" connector. Switching to "dctmdcs-pg-0". If this new address is incorrect please manually configure the connector to use the proper one.
+[0m[0m22:03:35,498 INFO  [org.jboss.as.connector.deployment] (MSC service thread 1-4) WFLYJCA0007: Registered connection factory java:/JmsXA
+[0m[0m22:03:35,503 INFO  [org.wildfly.extension.messaging-activemq] (ServerService Thread Pool -- 66) WFLYMSGAMQ0002: Bound messaging object to jndi name java:jboss/exported/jms/RemoteConnectionFactory
+[0m[0m22:03:35,509 INFO  [org.wildfly.extension.messaging-activemq] (ServerService Thread Pool -- 64) WFLYMSGAMQ0002: Bound messaging object to jndi name java:/ConnectionFactory
+[0m[0m22:03:35,510 INFO  [org.wildfly.extension.messaging-activemq] (ServerService Thread Pool -- 63) WFLYMSGAMQ0002: Bound messaging object to jndi name java:/TouchRpcQueueConnectionFactory
+[0m[0m22:03:35,512 INFO  [org.wildfly.extension.messaging-activemq] (ServerService Thread Pool -- 63) WFLYMSGAMQ0002: Bound messaging object to jndi name java:jboss/exported/jms/TouchRpcQueueConnectionFactory
+[0m[0m22:03:35,749 INFO  [org.apache.activemq.artemis.ra] (MSC service thread 1-4) AMQ151007: Resource adaptor started
+[0m[0m22:03:35,756 INFO  [org.jboss.as.connector.services.resourceadapters.ResourceAdapterActivatorService$ResourceAdapterActivator] (MSC service thread 1-4) IJ020002: Deployed: file://RaActivatoractivemq-ra
+[0m[0m22:03:35,769 INFO  [org.jboss.as.connector.deployment] (MSC service thread 1-4) WFLYJCA0118: Binding connection factory named java:/JmsXA to alias java:jboss/DefaultJMSConnectionFactory
+[0m[0m22:03:35,765 INFO  [org.jboss.as.connector.deployment] (MSC service thread 1-3) WFLYJCA0002: Bound JCA ConnectionFactory [java:/JmsXA]
+[0m
+Launching installer...
+
+[33m22:03:39,636 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0059: Class Path entry activation.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/lib/dfc.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:39,640 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0059: Class Path entry jsr173_api.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/lib/dfc.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:39,646 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0059: Class Path entry activation.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/lib/jaxb-impl.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:39,648 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0059: Class Path entry jsr173_1.0_api.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/lib/jaxb-impl.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:39,654 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0059: Class Path entry jaxb1-impl.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/lib/jaxb-impl.jar  does not point to a valid jar for a Class-Path reference.
+[0m[0m22:03:39,695 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) WFLYSRV0207: Starting subdeployment (runtime-name: "OTDSAuthentication.war")
+[0m[0m22:03:39,695 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) WFLYSRV0207: Starting subdeployment (runtime-name: "DmMail.war")
+[0m[0m22:03:39,696 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) WFLYSRV0207: Starting subdeployment (runtime-name: "oAuthAuthentication.war")
+[0m[0m22:03:39,697 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) WFLYSRV0207: Starting subdeployment (runtime-name: "SAMLAuthentication.war")
+[0m[0m22:03:39,697 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) WFLYSRV0207: Starting subdeployment (runtime-name: "dmotdsrest.war")
+[0m[0m22:03:39,704 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0207: Starting subdeployment (runtime-name: "DmMethods.war")
+[0m[33m22:03:41,589 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry jaxp-api.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/saaj-api.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,596 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry jax-qname.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/saaj-api.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,598 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry servlet.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/saaj-api.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,620 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry jaxb-xjc.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/jaxws-tools.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,620 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry relaxngDatatype.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/jaxws-tools.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,654 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry sjsxp.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/jaxws-rt.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,663 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry stax-utils.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/jaxws-rt.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,696 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry xerces-J_1.4.0.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/castor-1.1-xml.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:41,696 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry commons-logging-1.1.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/castor-1.1-xml.jar  does not point to a valid jar for a Class-Path reference.
+[0m[0m22:03:42,030 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0207: Starting subdeployment (runtime-name: "documentum-bocs-ws.war")
+[0m[0m22:03:42,031 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0207: Starting subdeployment (runtime-name: "bocs.war")
+[0m[33m22:03:42,177 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0059: Class Path entry APP-INF/classes/ in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/documentum-bocs-ws.war  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,178 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0059: Class Path entry lib/commons-lang-2.4.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/documentum-bocs-ws.war  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,178 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0059: Class Path entry lib/emc-dfs-services.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/documentum-bocs-ws.war  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,179 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0059: Class Path entry lib/cryptojFIPS.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/documentum-bocs-ws.war  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,179 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0059: Class Path entry lib/certj.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/documentum-bocs-ws.war  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,180 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0059: Class Path entry lib/bocs-ws-shared.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/documentum-bocs-ws.war  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,246 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry log4j.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/DmMethods.war/WEB-INF/lib/commons-logging.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:42,246 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0059: Class Path entry log4j-core.jar in /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/ServerApps.ear/DmMethods.war/WEB-INF/lib/commons-logging.jar  does not point to a valid jar for a Class-Path reference.
+[0m[33m22:03:43,280 WARN  [org.jboss.as.dependency.private] (MSC service thread 1-4) WFLYSRV0018: Deployment "deployment.acs.ear" is using a private module ("org.jboss.as.jmx") which may be changed or removed in future versions without notice.
+[0m[33m22:03:43,838 WARN  [org.jboss.weld.deployer] (MSC service thread 1-3) WFLYWELD0013: Deployment ServerApps.ear contains CDI annotations but no bean archive was found (no beans.xml or class with bean defining annotations was present).
+[0m[33m22:03:43,947 WARN  [org.jboss.as.jaxrs] (MSC service thread 1-1) WFLYRS0018: Explicit usage of Jackson annotation in a JAX-RS deployment; the system will disable JSON-B processing for the current deployment. Consider setting the 'resteasy.preferJacksonOverJsonB' property to 'false' to restore JSON-B.
+[0m[33m22:03:43,999 WARN  [org.jboss.as.jaxrs] (MSC service thread 1-3) WFLYRS0018: Explicit usage of Jackson annotation in a JAX-RS deployment; the system will disable JSON-B processing for the current deployment. Consider setting the 'resteasy.preferJacksonOverJsonB' property to 'false' to restore JSON-B.
+[0m[33m22:03:44,003 WARN  [org.jboss.as.jaxrs] (MSC service thread 1-2) WFLYRS0018: Explicit usage of Jackson annotation in a JAX-RS deployment; the system will disable JSON-B processing for the current deployment. Consider setting the 'resteasy.preferJacksonOverJsonB' property to 'false' to restore JSON-B.
+[0m[33m22:03:44,083 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[0m22:03:44,117 INFO  [org.infinispan.factories.GlobalComponentRegistry] (MSC service thread 1-4) ISPN000128: Infinispan version: Infinispan 'Infinity Minus ONE +2' 9.4.14.Final
+[0m[33m22:03:44,144 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[33m22:03:44,148 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[33m22:03:44,151 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[33m22:03:44,153 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[33m22:03:44,155 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[33m22:03:44,157 WARN  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0274: Excluded dependency javax.xml.bind via jboss-deployment-structure.xml does not exist.
+[0m[0m22:03:44,477 INFO  [org.jboss.as.clustering.infinispan] (ServerService Thread Pool -- 63) WFLYCLINF0002: Started client-mappings cache from ejb container
+[0m[0m22:03:44,640 INFO  [io.undertow.servlet] (ServerService Thread Pool -- 64) No Spring WebApplicationInitializer types detected on classpath
+[0m[0m22:03:44,645 INFO  [io.undertow.servlet] (ServerService Thread Pool -- 67) No Spring WebApplicationInitializer types detected on classpath
+[0m[0m22:03:44,652 INFO  [io.undertow.servlet] (ServerService Thread Pool -- 70) No Spring WebApplicationInitializer types detected on classpath
+[0m[0m22:03:44,657 INFO  [io.undertow.servlet] (ServerService Thread Pool -- 69) No Spring WebApplicationInitializer types detected on classpath
+[0m[0m22:03:44,659 INFO  [io.undertow.servlet] (ServerService Thread Pool -- 65) No Spring WebApplicationInitializer types detected on classpath
+[0m[0m22:03:44,669 INFO  [io.undertow.servlet] (ServerService Thread Pool -- 62) No Spring WebApplicationInitializer types detected on classpath
+[0m[0m22:03:44,717 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 70) WFLYUT0021: Registered web context: '/DmMail' for server 'default-server'
+[0m[0m22:03:44,724 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 67) WFLYUT0021: Registered web context: '/oAuthAuthentication' for server 'default-server'
+[0m[0m22:03:44,716 INFO  [stdout] (ServerService Thread Pool -- 63) Resource URI for property file is : vfs:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/configs.jar/app_osgi_config.properties
+[0m[0m22:03:44,728 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 64) WFLYUT0021: Registered web context: '/SAMLAuthentication' for server 'default-server'
+[0m[0m22:03:44,729 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath is : /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/HttpService.jar
+[0m[0m22:03:44,732 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath URI is : file:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/HttpService.jar
+[0m[0m22:03:44,732 INFO  [javax.enterprise.resource.webservices.jaxws.server.http] (ServerService Thread Pool -- 66) WSSERVLET12: JAX-WS context listener initializing
+[0m[0m22:03:44,734 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath is : /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/HttpServiceImpl.jar
+[0m[0m22:03:44,714 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 69) WFLYUT0021: Registered web context: '/OTDSAuthentication' for server 'default-server'
+[0m[0m22:03:44,736 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath URI is : file:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/HttpServiceImpl.jar
+[0m[0m22:03:44,738 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath is : /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/Common.jar
+[0m[0m22:03:44,739 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath URI is : file:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/Common.jar
+[0m[0m22:03:44,740 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath is : /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/Web.jar
+[0m[0m22:03:44,747 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath URI is : file:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/Web.jar
+[0m[0m22:03:44,749 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath is : /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/Jmx.jar
+[0m[0m22:03:44,750 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath URI is : file:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/Jmx.jar
+[0m[0m22:03:44,752 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath is : /opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/org.apache.felix.bundlerepository-1.2.1.jar
+[0m[0m22:03:44,754 INFO  [stdout] (ServerService Thread Pool -- 63) Canonical FilePath URI is : file:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/org.apache.felix.bundlerepository-1.2.1.jar
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.felix.framework.util.SecureAction (vfs:/opt/dctm/wildfly17.0.1/server/DctmServer_MethodServer/deployments/acs.ear/lib/felix.jar) to method java.net.URLClassLoader.addURL(java.net.URL)
+WARNING: Please consider reporting this to the maintainers of org.apache.felix.framework.util.SecureAction
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[0m[0m22:03:45,369 INFO  [javax.enterprise.resource.webservices.jaxws.server] (ServerService Thread Pool -- 66) Dynamically creating exception bean Class com.documentum.acs.ws.ws.jaxws.ServiceExceptionBean
+[0m[0m22:03:45,896 INFO  [stdout] (FelixStartLevel) !!!!Creating Configuration Service !!!!
+[0m[0m22:03:46,190 INFO  [stdout] (ServerService Thread Pool -- 66) DEPLOYMENT_ID = 1864a2c8-8249-4ca5-a7b3-009b19a27039
+[0m[0m22:03:46,333 INFO  [javax.enterprise.resource.webservices.jaxws.servlet.http] (ServerService Thread Pool -- 66) WSSERVLET14: JAX-WS servlet initializing
+[0m[0m22:03:46,337 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 66) WFLYUT0021: Registered web context: '/bocs-ws' for server 'default-server'
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.documentum.install.shared.common.services.dfc.DiDfcRuntime (file:/tmp/install.dir.5196/InstallerData/installer.zip) to method java.net.URLClassLoader.addURL(java.net.URL)
+WARNING: Please consider reporting this to the maintainers of com.documentum.install.shared.common.services.dfc.DiDfcRuntime
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[0m[0m22:03:49,191 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> Documentum Java Method Server
+[0m[0m22:03:49,203 INFO  [com.sun.jersey.api.core.PackagesResourceConfig] (ServerService Thread Pool -- 65) Scanning for root resource and provider classes in the packages:
+  com.documentum.cs.otds
+  com.fasterxml.jackson
+[0m[0m22:03:49,431 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> Docbase Names = docbase1
+[0m[0m22:03:49,433 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> Host Names = dctmdcs-pg-0
+[0m[0m22:03:49,435 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> Docbase Install Owner Name = dmadmin
+[0m[0m22:03:49,439 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> IP Addresses = 172.17.0.10, 127.0.0.1, 0:0:0:0:0:0:0:1
+[0m[0m22:03:49,441 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> Java Method Dir = /opt/dctm/dba/java_methods
+[0m[0m22:03:49,441 INFO  [stdout] (ServerService Thread Pool -- 62) <DCTM><INFO> DoMethod CLASSPATH=$CLASSPATH:/opt/dctm/dba/java_methods/
+[0m[0m22:03:49,645 INFO  [com.sun.jersey.api.core.ScanningResourceConfig] (ServerService Thread Pool -- 65) Root resource classes found:
+  class com.documentum.cs.otds.DmOTDSConnector
+[0m[0m22:03:49,654 INFO  [com.sun.jersey.api.core.ScanningResourceConfig] (ServerService Thread Pool -- 65) Provider classes found:
+  class com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
+  class com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
+[0m[0m22:03:49,802 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 62) WFLYUT0021: Registered web context: '/DmMethods' for server 'default-server'
+[0m[0m22:03:49,809 INFO  [com.sun.jersey.server.impl.application.WebApplicationImpl] (ServerService Thread Pool -- 65) Initiating Jersey application, version 'Jersey: 1.19.1 03/11/2016 02:08 PM'
+[0m[33m22:03:51,055 WARNING [com.sun.jersey.spi.inject.Errors] (ServerService Thread Pool -- 65) The following warnings have been detected with resource and/or provider classes:
+  WARNING: A sub-resource method, public javax.ws.rs.core.Response com.documentum.cs.otds.DmOTDSConnector.getStatus(), with URI template, "/", is treated as a resource method
+  WARNING: A HTTP GET method, public javax.ws.rs.core.Response com.documentum.cs.otds.DmOTDSConnector.getFeatures(java.lang.String), should not consume any entity.
+[0m[0m22:03:51,055 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 65) WFLYUT0021: Registered web context: '/dmotdsrest' for server 'default-server'
+[0m[0m22:03:51,779 INFO  [org.wildfly.naming] (FelixStartLevel) WildFly Naming version 1.0.10.Final
+[0m[0m22:03:51,998 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 63) WFLYUT0021: Registered web context: '/ACS' for server 'default-server'
+[0m[0m22:03:52,018 INFO  [org.jboss.as.server] (ServerService Thread Pool -- 37) WFLYSRV0010: Deployed "ServerApps.ear" (runtime-name : "ServerApps.ear")
+[0m[0m22:03:52,018 INFO  [org.jboss.as.server] (ServerService Thread Pool -- 37) WFLYSRV0010: Deployed "acs.ear" (runtime-name : "acs.ear")
+[0m[0m22:03:52,138 INFO  [org.jboss.as.server] (Controller Boot Thread) WFLYSRV0212: Resuming server
+[0m[0m22:03:52,148 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Full 17.0.1.Final (WildFly Core 9.0.2.Final) started in 24433ms - Started 965 of 1221 services (446 services are lazy, passive or on-demand)
+[0mThumbnail server configuration is Successful.
+Updating the BaseURL for thumbnail server
+/opt/dctm_docker/thumbserverbuild/configure-thumbnail-server.sh: line 90: kill: (6529) - No such process
+Tomcat started.
+Checking the Thumbnail Server service..
+Thumbnail server is running
+Finished Thumbnail server Configuration
+---------------------------------------------------------------------------------------
+handle_otds_config
+Updating ACS config object base URL
+ACS config object updated successfully: http://dctmdcs-pg-jms.docu.cfcr-lab.bp-paas.otxlab.net:80/ACS/servlet/ACS
+Updating Thumbnail server base URL
+Thumbnail server base URL updated successfully: http://dctmdcs-pg-tns.docu.cfcr-lab.bp-paas.otxlab.net/thumbsrv/getThumbnail?
+The data dictionary populate for the locale en
+---------------------------------------------------------------------------------------
+prepare readiness
+docbase1-installed file created
+primary-installed file created
+---------------------------------------------------------------------------------------
+handle_logs_cleanup
+-------------------SCRIPT COMPLETED---------------------------------
+cs_startup.sh completed successfully
+[0m22:04:43,080 INFO  [io.undertow.servlet] (default task-1) Initializing CORS filter as per the deployment descriptor
+[0m[0m22:04:45,809 INFO  [stdout] (default task-1) Loading configuration :com/documentum/mthdservlet/discan.properties
+[0m[0m22:04:45,813 INFO  [stdout] (default task-1) Loading configuration completed.
+[0m[0m22:04:45,961 INFO  [org.springframework.context.annotation.AnnotationConfigApplicationContext] (default task-1) Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@59b39fc5: startup date [Tue Mar 10 22:04:45 UTC 2020]; root of context hierarchy
+[0m[0m22:04:46,168 INFO  [org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor] (default task-1) JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
