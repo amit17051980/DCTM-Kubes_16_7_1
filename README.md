@@ -40,7 +40,8 @@ helm init
 # Prepare Documentum Images and HelmCharts
 Contact your OpenText DSE to enable [Documentum Content Server Docker Image](https://mimage.opentext.com/support/ecm/secure/software/dell/documentum/documentumcontentserver/16.7.1/contentserver_16.7.1000_docker_centos.tar) download under OpenText Support Site.
 
-FYI.. [Reference Only. Follow the next section for continuing the setup]
+FYI.. [Reference Only. Follow the next section for continuing the setup].
+
 Example commands used before initiating this repo:
 ```
 mkdir -p CS_16_7_1000
