@@ -24,7 +24,7 @@ contentserver:
     password: password
   aek:
     algorithm: AES_256_CBC
-    passphrase: Password@123
+    passphrase: password
 
   install:
     appserver:
@@ -61,7 +61,7 @@ database:
     -----END CERTIFICATE----- 
 ### Thumbnail Server ###
 thumbnailServer:
-  appServerPassword: password@123
+  appServerPassword: password
 
 ### S3 Store ###
 s3Store:
