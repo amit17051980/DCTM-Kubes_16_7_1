@@ -52,11 +52,13 @@ tar -xvf HelmChart.tar
 tar -xvf Scripts.tar
 tar -xvf cs-secrets-16.7.1000-0847.tgz
 # Graylog Monitoring has not been experienced in this test!
-docker pull graylog/graylog:3.1.4
-docker load -i contentserver_centos_16.7.1000.0847.tar
+# docker pull graylog/graylog:3.1.4
+# The docker image will be loaded to minikube docker context
+# docker load -i contentserver_centos_16.7.1000.0847.tar
 ```
 
 ## Upload Images (Postgres and Content Server) to local registry
+**Note**: If you have installed [Docker for MacOS], the steps below can simply be used without mounting and changing the shell to minikube. Just use `eval $(minikube -p minikube docker-env)` command from MacOS shell. This will bring Minikube Docker context to MacOs Docker context. This makes all the docker commands executed inside the minikube without going to minikube shell.
 
 The code below assumes that the **contentserver_centos_16.7.1000.0847.tar** has been extracted from **contentserver_16.7.1000_docker_centos.tar** as shown in the example above.
 ```
@@ -118,6 +120,15 @@ Review Kubernetes logs and dashboard. Review the Sample log file in the project.
 # Thanks and good luck!
 _If you have any concerns or questions, please comment here. Will try to answer as appropriate.
 I'll progress with the rest of instructions to make it complete at later stage. But please compare the charts from official sites to understand how I enabled complete stack on Minikube without using External storage or dependencies._
+
+**Note**: If you want to run Documentum Administrator on your MacOS tomcat instance instead of Minikube cluster (under the same namespace), please create another services that exposes Docker Statefulset with 1489 port. This is giving little challenges which I am working on. But if you are using DCTM-REST as the entry point for Documentum, please simply use below commands, given that the dctm-rest.war and da.war has been modified to use the right dfc.properties.
+
+```
+helm install --name my-da stable/tomcat --set image.tomcat.repository=amit17051980/tomcat,image.tomcat.tag=8.5
+POD=$(kubectl get pod -l app=tomcat -o jsonpath="{.items[0].metadata.name}");
+kubectl cp da.war $POD:/usr/local/tomcat/webapps/
+kubectl cp dctm-rest.war $POD:/usr/local/tomcat/webapps/
+```
 
 # Reference Documents 
 * https://knowledge.opentext.com/knowledge/llisapi.dll/Open/77242433 
