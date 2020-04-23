@@ -121,7 +121,8 @@ Review Kubernetes logs and dashboard. Review the Sample log file in the project.
 _If you have any concerns or questions, please comment here. Will try to answer as appropriate.
 I'll progress with the rest of instructions to make it complete at later stage. But please compare the charts from official sites to understand how I enabled complete stack on Minikube without using External storage or dependencies._
 
-**Note**: If you want to run Documentum Administrator on your MacOS tomcat instance instead of Minikube cluster (under the same namespace), please create another services that exposes Docker Statefulset with 1489 port. This is giving little challenges which I am working on. But if you are using DCTM-REST as the entry point for Documentum, please simply use below commands, given that the dctm-rest.war and da.war has been modified to use the right dfc.properties.
+**Note**: If you want to run Documentum Administrator or REST Service or xCP Designer or xDA on your MacOS tomcat instance instead of Minikube cluster, please create another service that exposes Docker Statefulset with 1489 port (optionally 50000 of docbase /etc/services). This is currently giving little challenges which I am working on. 
+But if you are using DCTM-REST as the entry point for Documentum projects, please simply use below commands. It is being assumed that the dctm-rest.war and da.war are available in current directory and has been modified to use the right dfc.properties.
 
 ```
 helm install --name my-da stable/tomcat --set image.tomcat.repository=amit17051980/tomcat,image.tomcat.tag=8.5
